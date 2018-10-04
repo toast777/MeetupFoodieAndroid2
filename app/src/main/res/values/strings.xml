@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MeetupFoodieAndroid</string>
+    <string name="title_activity_order_start">OrderStartActivity</string>
+    <string name="title_activity_order_list">OrderListActivity</string>
+    <string name="title_activity_add_new_food">AddNewFoodActivity</string>
+    <string name="title_activity_add_toppings">AddToppingsActivity</string>
+    <string name="title_activity_order_load">OrderLoadActivity</string>
+    <string name="title_activity_order_summary">OrderSummaryActivity</string>
+</resources>
