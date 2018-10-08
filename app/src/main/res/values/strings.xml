@@ -6,4 +6,8 @@
     <string name="title_activity_add_toppings">AddToppingsActivity</string>
     <string name="title_activity_order_load">OrderLoadActivity</string>
     <string name="title_activity_order_summary">OrderSummaryActivity</string>
+    <string name="title_activity_order_select_rest">OrderSelectRestActivity</string>
+    <string name="change_region">Change Region</string>
+    <string name="settings_title">Please Select a Region</string>
+    <string name="settings_label">Current Region Setting</string>
 </resources>

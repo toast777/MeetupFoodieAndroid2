@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class AddToppingsActivity extends AppCompatActivity {
+public class OrderSelectRestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_toppings);
+        setContentView(R.layout.activity_order_select_rest);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -25,9 +25,6 @@ public class AddToppingsActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //TODO: Load any toppings if they exist
-        //TODO: Allow price customization total at first, maybe allow topping cust later
-        //TODO: Set FAB to open ListToppingsActivity
     }
 
 }

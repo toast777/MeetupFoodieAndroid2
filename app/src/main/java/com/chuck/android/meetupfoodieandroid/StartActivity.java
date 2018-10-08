@@ -82,7 +82,7 @@ public class StartActivity extends AppCompatActivity {
                 public void onCheckedChanged(RadioGroup group, int regionID) {
                     int selectedRadioButtonId = radioRegions.getCheckedRadioButtonId();
                     RadioButton radioBtn = findViewById(selectedRadioButtonId);
-                    editor.putString(PREF_REGION, "Kansas City");
+                    editor.putString(PREF_REGION, radioBtn.getText().toString());
                     editor.apply();
                     Toast.makeText(StartActivity.this, radioBtn.getText(), Toast.LENGTH_SHORT).show();
                 }

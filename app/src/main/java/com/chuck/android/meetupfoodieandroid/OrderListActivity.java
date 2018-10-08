@@ -25,6 +25,13 @@ public class OrderListActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //TODO: Set FAB to open AddNewFoodActivity
+        //TODO: Init Firebase DB
+        //TODO: Have Firebase check if currentlist is empty or set to none based on userid
+        //TODO: If empty do nothing, if not load current list
+        //TODO: List Current Food List from firebase
+        //
     }
 
 }
