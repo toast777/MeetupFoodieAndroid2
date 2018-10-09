@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.chuck.android.meetupfoodieandroid.OrderStartActivity;
+import com.chuck.android.meetupfoodieandroid.OrderListActivity;
 import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.Order;
 
@@ -42,9 +42,14 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Intent intent = new Intent(view.getContext(), OrderStartActivity.class);
-            intent.putExtra(EXTRA_ORDERID,orderList.get(position).getId());
-            view.getContext().startActivity(intent);
+            //Check if position is legend
+            if (position != 0)
+            {
+                Intent intent = new Intent(view.getContext(), OrderListActivity.class);
+                intent.putExtra(EXTRA_ORDERID,orderList.get(position-1).getId());
+                view.getContext().startActivity(intent);
+            }
+
         }
     }
 
@@ -59,11 +64,12 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
 
     @Override
     public void onBindViewHolder(@NonNull OrderLoadAdapter.OrderLoadViewHolder holder, int position) {
+        //Add Legend
         if (counter == 0 )
         {
-            holder.orderID.setText("Order ID" + "\n");
-            holder.orderDate.setText("Order Date" + "\n");
-            holder.orderTotal.setText("Order Total" + "\n");
+            holder.orderID.setText("Order ID\n");
+            holder.orderDate.setText("Order Date\n");
+            holder.orderTotal.setText("Order Total\n");
             counter++;
         }
         else if (orderList != null)

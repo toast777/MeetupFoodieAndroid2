@@ -25,6 +25,9 @@ public class OrderSelectRestActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Two Recycler views - location and rest name
+        //Add Listener for shared pref so when rest name is selected locations appear
     }
 
 }
