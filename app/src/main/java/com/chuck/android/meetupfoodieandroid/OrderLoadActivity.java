@@ -80,7 +80,7 @@ public class OrderLoadActivity extends AppCompatActivity {
         //TODO: Firebase set current order to NONE
         //TODO: Create Firebase user area - customize security so user can modify area
         // TODO: 10/8/2018 goto selectrest
-        Intent intent = new Intent(getApplicationContext(), OrderStartActivity.class);
+        Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
         startActivity(intent);
     }
     public void loadLastOrder(View view) {
