@@ -1,5 +1,6 @@
 package com.chuck.android.meetupfoodieandroid.adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chuck.android.meetupfoodieandroid.OrderStartActivity;
 import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.Order;
 
@@ -16,6 +18,8 @@ import java.util.List;
 public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.OrderLoadViewHolder>{
 
     private List<Order> orderList;
+    public static final String EXTRA_ORDERID = "Order ID";
+    private int counter;
 
     public class OrderLoadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ConstraintLayout orderLayout;
@@ -38,7 +42,9 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            //do something
+            Intent intent = new Intent(view.getContext(), OrderStartActivity.class);
+            intent.putExtra(EXTRA_ORDERID,orderList.get(position).getId());
+            view.getContext().startActivity(intent);
         }
     }
 
@@ -53,24 +59,32 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
 
     @Override
     public void onBindViewHolder(@NonNull OrderLoadAdapter.OrderLoadViewHolder holder, int position) {
-        if (orderList != null)
+        if (counter == 0 )
         {
-            holder.orderID.setText(orderList.get(position).getId());
-            holder.orderDate.setText(orderList.get(position).getDate());
-            holder.orderTotal.setText(Double.toString(orderList.get(position).getTotal()));
-            //What do we populate textview with
+            holder.orderID.setText("Order ID" + "\n");
+            holder.orderDate.setText("Order Date" + "\n");
+            holder.orderTotal.setText("Order Total" + "\n");
+            counter++;
+        }
+        else if (orderList != null)
+        {
+            holder.orderID.append((orderList.get(position-1).getId()).substring(0, 6));
+            holder.orderDate.append(orderList.get(position-1).getDate().toString());
+            holder.orderTotal.append(Double.toString(orderList.get(position-1).getTotal()));
+
         }
     }
 
     public void setOrderList(List<Order> currentFoodList) {
         this.orderList = currentFoodList;
+        this.counter = 0;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         if (orderList != null)
-            return orderList.size();
+            return orderList.size()+1;
         else
             return 0;
     }

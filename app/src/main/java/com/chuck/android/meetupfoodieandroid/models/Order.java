@@ -5,10 +5,10 @@ import java.util.Date;
 public class Order {
     private String id;
     private String region;
-    private Date date;
+    private String date;
     private int total;
 
-    public Order(String id, String region, Date date, int total)
+    public Order(String id,String region, String date, int total)
     {
         this.id = id;
         this.region = region;
@@ -18,13 +18,7 @@ public class Order {
     //Needed for firebase
     public Order(){}
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getRegion() {
         return region;
@@ -34,11 +28,11 @@ public class Order {
         this.region = region;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -48,5 +42,13 @@ public class Order {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

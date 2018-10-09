@@ -10,4 +10,8 @@
     <string name="change_region">Change Region</string>
     <string name="settings_title">Please Select a Region</string>
     <string name="settings_label">Current Region Setting</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_total">Order Total</string>
+    <string name="load_order_title">Or Load an Order by clicking on one below</string>
 </resources>
