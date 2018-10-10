@@ -27,6 +27,7 @@ import java.util.List;
 public class StartActivity extends AppCompatActivity {
     public static final String PREF_REGION = "Region Preference";
     private static final List<String> regionArray = new ArrayList<>();
+    public static final String CONSTANT_NONE = "NONE";
 
 
     @Override

@@ -14,4 +14,7 @@
     <string name="order_date">Order Date</string>
     <string name="order_total">Order Total</string>
     <string name="load_order_title">Or Load an Order by clicking on one below</string>
+    <string name="error_load_last">Error Loading Last Order, Please Start a New One or Load an Existing One</string>
+    <string name="error_no_region">No Region Set</string>
+    <string name="select_address">Select Address</string>
 </resources>

@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_CURRENT_LOCATION;
+import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_REST;
+import static com.chuck.android.meetupfoodieandroid.StartActivity.CONSTANT_NONE;
 import static com.chuck.android.meetupfoodieandroid.StartActivity.PREF_REGION;
 
 public class OrderLoadActivity extends AppCompatActivity {
@@ -46,8 +49,8 @@ public class OrderLoadActivity extends AppCompatActivity {
     LinearLayoutManager orderLayoutManager;
     private static final String TAG = "Order Load Activity" ;
     private TextView loadInstructions;
-
-
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
 
@@ -65,8 +68,10 @@ public class OrderLoadActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference("users");
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -105,39 +110,32 @@ public class OrderLoadActivity extends AppCompatActivity {
     }
 
     public void startNewOrder(View view) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = sharedPreferences.edit();
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userRef = database.getReference("users");
 
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
         assert currentUser != null;
         String listKey = userRef.child(currentUser.getUid()).child("Orders").push().getKey();
 
         editor.putString(PREF_CURRENT_LIST, listKey);
+        editor.putString(PREF_CURRENT_LOCATION,CONSTANT_NONE);
+        editor.putString(PREF_REST,CONSTANT_NONE);
         editor.apply();
+
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         Date date = new Date();
         String strDate = dateFormat.format(date);
 
-        Order newOrder = new Order(listKey,sharedPreferences.getString(PREF_REGION,"NONE"),strDate,0);
+        Order newOrder = new Order(listKey,sharedPreferences.getString(PREF_REGION,CONSTANT_NONE),strDate,0);
 
         assert listKey != null;
         userRef.child(currentUser.getUid()).child("Orders").child(listKey).setValue(newOrder);
-//        userRef.child(currentUser.getUid()).child(listKey).child("Region").setValue(sharedPreferences.getString(PREF_REGION,"NONE"));
-//        userRef.child(currentUser.getUid()).child(listKey).child("Date Start").setValue(strDate,"NONE");
-//        userRef.child(currentUser.getUid()).child(listKey).child("Total").setValue(0);
-
-
-
-
-        //Push Date as well and store current order number to Shared Preference
-
-
 
         //TODO: Firebase set current order to NONE
         //TODO: Create Firebase user area - customize security so user can modify area
@@ -147,17 +145,32 @@ public class OrderLoadActivity extends AppCompatActivity {
     }
     public void loadLastOrder(View view) {
         // TODO: 10/8/2018 goto orderlist
-        Intent intent = new Intent(getApplicationContext(), OrderStartActivity.class);
-        startActivity(intent);
-    }
-    public void loadOrder(View view) {
-        // TODO: 10/7/2018 Create a Recyclerview to list current orders, click it goes to next activity
-        // TODO: 10/8/2018 goto orderlist
-        rvOrderList = findViewById(R.id.rv_order_list);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Boolean isRest = sharedPreferences.contains(PREF_REST);
+        Boolean isLocation = sharedPreferences.contains(PREF_CURRENT_LOCATION);
 
-        rvOrderList.setVisibility(View.VISIBLE);
-        //Delete Not Needed just show previous orders
+        if ((sharedPreferences.contains(PREF_REST) & sharedPreferences.contains(PREF_CURRENT_LOCATION)))
+        {
+            String restName = sharedPreferences.getString(PREF_REST,CONSTANT_NONE);
+            String location = sharedPreferences.getString(PREF_CURRENT_LOCATION,CONSTANT_NONE);
+            if (restName.equals(CONSTANT_NONE) | location.equals(CONSTANT_NONE))
+            {
+                Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(getApplicationContext(), OrderListActivity.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            Toast.makeText(this, R.string.error_load_last, Toast.LENGTH_SHORT).show();
+        }
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

@@ -5,33 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".OrderSelectRestActivity"
-    tools:showIn="@layout/activity_order_select_rest">
+    tools:context=".OrderSelectLocationActivity">
 
     <TextView
-        android:id="@+id/tv_rest_title"
+        android:id="@+id/tv_location_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Select Resteraunt"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="test"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_rest"
+        android:id="@+id/rv_rest_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rest_title"/>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_location_title"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -21,6 +21,18 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
     public static final String EXTRA_ORDERID = "Order ID";
     private int counter;
 
+    //Add header from stackoverflow - https://stackoverflow.com/questions/30840352/recyclerview-display-textview-at-top
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_CELL = 1;
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0)
+            return TYPE_HEADER;
+        else
+            return TYPE_CELL;
+    }
+
     public class OrderLoadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ConstraintLayout orderLayout;
         TextView orderID;
@@ -61,36 +73,32 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
         View view = inflater.inflate(R.layout.order_list_item,parent,false);
         return new OrderLoadViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull OrderLoadAdapter.OrderLoadViewHolder holder, int position) {
         //Add Legend
-        if (counter == 0 )
-        {
-            holder.orderID.setText("Order ID\n");
-            holder.orderDate.setText("Order Date\n");
-            holder.orderTotal.setText("Order Total\n");
-            counter++;
-        }
-        else if (orderList != null)
-        {
-            holder.orderID.append((orderList.get(position-1).getId()).substring(0, 6));
-            holder.orderDate.append(orderList.get(position-1).getDate().toString());
-            holder.orderTotal.append(Double.toString(orderList.get(position-1).getTotal()));
-
+        switch (getItemViewType(position)) {
+            case TYPE_HEADER:
+                holder.orderID.setText("Order ID\n");
+                holder.orderDate.setText("Order Date\n");
+                holder.orderTotal.setText("Order Total\n");
+                break;
+            case TYPE_CELL:
+                holder.orderID.setText((orderList.get(position-1).getId()).substring(0, 6));
+                holder.orderDate.setText(orderList.get(position-1).getDate().toString());
+                holder.orderTotal.setText(Double.toString(orderList.get(position-1).getTotal()));
+                break;
         }
     }
 
     public void setOrderList(List<Order> currentFoodList) {
         this.orderList = currentFoodList;
-        this.counter = 0;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
         if (orderList != null)
-            return orderList.size()+1;
+            return orderList.size();
         else
             return 0;
     }
