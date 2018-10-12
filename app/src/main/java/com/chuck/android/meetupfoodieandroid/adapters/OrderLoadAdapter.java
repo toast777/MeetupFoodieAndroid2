@@ -10,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.OrderListActivity;
+import com.chuck.android.meetupfoodieandroid.OrderSelectLocationActivity;
+import com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity;
 import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.Order;
 
 import java.util.List;
+
+import static com.chuck.android.meetupfoodieandroid.StartActivity.CONSTANT_NONE;
 
 public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.OrderLoadViewHolder>{
 
@@ -57,11 +61,25 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
             //Check if position is legend
             if (position != 0)
             {
-                Intent intent = new Intent(view.getContext(), OrderListActivity.class);
-                intent.putExtra(EXTRA_ORDERID,orderList.get(position-1).getId());
-                view.getContext().startActivity(intent);
-            }
+                String location = orderList.get(position-1).getLocation();
+                String restName = orderList.get(position-1).getRestaurant();
+               if (restName.equals(CONSTANT_NONE))
+               {
+                   Intent restIntent = new Intent(view.getContext(), OrderSelectRestActivity.class);
+                   view.getContext().startActivity(restIntent);
+               }
+               else if (location.equals(CONSTANT_NONE))
+               {
+                   Intent restIntent = new Intent(view.getContext(), OrderSelectLocationActivity.class);
+                   view.getContext().startActivity(restIntent);
+               }
+               else {
+                   Intent intent = new Intent(view.getContext(), OrderListActivity.class);
+                   intent.putExtra(EXTRA_ORDERID,orderList.get(position-1).getId());
+                   view.getContext().startActivity(intent);
+               }
 
+            }
         }
     }
 
@@ -98,7 +116,7 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
     @Override
     public int getItemCount() {
         if (orderList != null)
-            return orderList.size();
+            return orderList.size()+1;
         else
             return 0;
     }

@@ -33,11 +33,6 @@ public class OrderListActivity extends AppCompatActivity {
     private TextView tvOrderNumber;
     private String orderNumber;
     private static final String TAG = "OrderListActivity";
-    List<FirebaseFoodItem> mFoodItems = new ArrayList<>();
-    private RecyclerView rvFoodList;
-    private FirebaseFoodAdapter adapter;
-    LinearLayoutManager foodLayoutManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,41 +68,7 @@ public class OrderListActivity extends AppCompatActivity {
         tvOrderNumber = findViewById(R.id.tv_order_list_title);
         tvOrderNumber.setText(orderNumber);
 
-        rvFoodList = findViewById(R.id.rv_firebase_food);
-        initRecyclerView();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Kansas City").child("Papa Johns");
-
-        // Read from the database - in wrong activity :P
-        myRef.child("food items").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    FirebaseFoodItem food = snapshot.getValue(FirebaseFoodItem.class);
-                    mFoodItems.add(food);
-                    Log.i(TAG, "food loaded");
-                }
-                adapter.setFoodList(mFoodItems);
-
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "loadPost:onCancelled", error.toException());
-            }
-        });
-
-
-
-
-
     }
-    private void initRecyclerView() {
-        foodLayoutManager = new LinearLayoutManager(this);
-        rvFoodList.setLayoutManager(foodLayoutManager);
-        adapter = new FirebaseFoodAdapter();
-        rvFoodList.setAdapter(adapter);
-    }
+
 
 }

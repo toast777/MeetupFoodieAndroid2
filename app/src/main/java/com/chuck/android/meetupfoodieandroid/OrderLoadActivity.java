@@ -132,7 +132,7 @@ public class OrderLoadActivity extends AppCompatActivity {
         Date date = new Date();
         String strDate = dateFormat.format(date);
 
-        Order newOrder = new Order(listKey,sharedPreferences.getString(PREF_REGION,CONSTANT_NONE),strDate,0);
+        Order newOrder = new Order(listKey,sharedPreferences.getString(PREF_REGION,CONSTANT_NONE),strDate,0,CONSTANT_NONE,CONSTANT_NONE);
 
         assert listKey != null;
         userRef.child(currentUser.getUid()).child("Orders").child(listKey).setValue(newOrder);
@@ -146,16 +146,19 @@ public class OrderLoadActivity extends AppCompatActivity {
     public void loadLastOrder(View view) {
         // TODO: 10/8/2018 goto orderlist
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Boolean isRest = sharedPreferences.contains(PREF_REST);
-        Boolean isLocation = sharedPreferences.contains(PREF_CURRENT_LOCATION);
 
         if ((sharedPreferences.contains(PREF_REST) & sharedPreferences.contains(PREF_CURRENT_LOCATION)))
         {
             String restName = sharedPreferences.getString(PREF_REST,CONSTANT_NONE);
             String location = sharedPreferences.getString(PREF_CURRENT_LOCATION,CONSTANT_NONE);
-            if (restName.equals(CONSTANT_NONE) | location.equals(CONSTANT_NONE))
+            if (restName.equals(CONSTANT_NONE))
             {
                 Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
+                startActivity(intent);
+            }
+            else if (location.equals(CONSTANT_NONE))
+            {
+                Intent intent = new Intent(getApplicationContext(), OrderSelectLocationActivity.class);
                 startActivity(intent);
             }
             else

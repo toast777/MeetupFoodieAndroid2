@@ -7,13 +7,18 @@ public class Order {
     private String region;
     private String date;
     private int total;
+    private String location;
+    private String restaurant;
 
-    public Order(String id,String region, String date, int total)
+    public Order(String id,String region, String date, int total,String location, String restaurant)
     {
         this.id = id;
         this.region = region;
         this.date = date;
         this.total = total;
+        this.location = location;
+        this.restaurant = restaurant;
+
     }
     //Needed for firebase
     public Order(){}
@@ -50,5 +55,21 @@ public class Order {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(String restaurant) {
+        this.restaurant = restaurant;
     }
 }

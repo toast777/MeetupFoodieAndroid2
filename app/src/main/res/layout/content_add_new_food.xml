@@ -9,4 +9,13 @@
     tools:context=".AddNewFoodActivity"
     tools:showIn="@layout/activity_add_new_food">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_firebase_food"
+        android:layout_width="245dp"
+        android:layout_height="362dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

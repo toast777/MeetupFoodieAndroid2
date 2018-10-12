@@ -34,8 +34,8 @@ public class OrderSelectRestActivity extends AppCompatActivity{
     private RecyclerView rvRestList;
     private RestaurantAdapter adapter;
     LinearLayoutManager restLayoutManager;
-    public static final String PREF_REST = "Selected Restaurant";
-    public static final String PREF_CURRENT_LOCATION = "Current Location";
+    public static final String PREF_REST = "restaurant";
+    public static final String PREF_CURRENT_LOCATION = "location";
     private TextView restInstructions;
     private FirebaseDatabase database;
     private DatabaseReference restRef;
