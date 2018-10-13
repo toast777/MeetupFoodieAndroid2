@@ -1,6 +1,7 @@
 package com.chuck.android.meetupfoodieandroid.models;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private String id;
@@ -9,6 +10,7 @@ public class Order {
     private int total;
     private String location;
     private String restaurant;
+    private List<customFoodItem> foodItems;
 
     public Order(String id,String region, String date, int total,String location, String restaurant)
     {
@@ -18,12 +20,10 @@ public class Order {
         this.total = total;
         this.location = location;
         this.restaurant = restaurant;
-
+        this.foodItems = new ArrayList<>();
     }
     //Needed for firebase
     public Order(){}
-
-
 
     public String getRegion() {
         return region;
@@ -71,5 +71,19 @@ public class Order {
 
     public void setRestaurant(String restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public List<customFoodItem> getFoodItems() {
+        return foodItems;
+    }
+
+    public void setFoodItems(List<customFoodItem> foodItems) {
+        this.foodItems = foodItems;
+    }
+    public void addFoodItems(customFoodItem foodItem){
+        this.foodItems.add(foodItem);
+    }
+    public void deleteFoodItems(customFoodItem foodItem){
+        this.foodItems.clear();
     }
 }

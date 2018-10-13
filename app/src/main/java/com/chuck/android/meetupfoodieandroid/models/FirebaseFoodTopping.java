@@ -10,6 +10,7 @@ public class FirebaseFoodTopping {
         this.imgSrc = imgSrc;
         this.price = price;
     }
+    public FirebaseFoodTopping(){}
 
     public String getName() {
         return name;

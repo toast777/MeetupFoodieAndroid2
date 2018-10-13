@@ -13,6 +13,7 @@ public class customFoodItem {
         this.customPrice = customPrice;
         this.toppings = toppings;
     }
+    public customFoodItem() {}
 
     public FirebaseFoodItem getFoodItem() {
         return foodItem;

@@ -18,6 +18,7 @@ import java.util.List;
 public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapter.FoodItemViewHolder>{
 
     private List<FirebaseFoodItem> foodList;
+    public static final String EXTRA_PARCEL_FOOD_ITEM = "foodItem";
 
     public class FoodItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ConstraintLayout foodLayout;
@@ -35,11 +36,7 @@ public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapte
         public void onClick(View view) {
             int position = getAdapterPosition();
             Intent myIntent = new Intent(view.getContext(), OrderListActivity.class);
-            Intent intent = myIntent.putExtra("EXTRA_FOOD_NAME", foodList.get(position).getName());
-            myIntent.putExtra("EXTRA_FOOD_IMGSRC", foodList.get(position).getImgSrc());
-            myIntent.putExtra("EXTRA_FOOD_NUMBERADDONS", foodList.get(position).getNumAddOns());
-            myIntent.putExtra("EXTRA_FOOD_PRICE", foodList.get(position).getPrice());
-            myIntent.putExtra("EXTRA_FOOD_ALLOWADDONS",foodList.get(position).isAllowAddOns());
+            Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_ITEM, foodList.get(position));
             view.getContext().startActivity(myIntent);
         }
     }

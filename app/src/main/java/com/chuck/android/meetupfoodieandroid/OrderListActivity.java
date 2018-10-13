@@ -27,12 +27,14 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.chuck.android.meetupfoodieandroid.OrderLoadActivity.PREF_CURRENT_LIST;
+import static com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter.EXTRA_PARCEL_FOOD_ITEM;
 import static com.chuck.android.meetupfoodieandroid.adapters.OrderLoadAdapter.EXTRA_ORDERID;
 
 public class OrderListActivity extends AppCompatActivity {
     private TextView tvOrderNumber;
+    private TextView tvOrderTest;
     private String orderNumber;
-    private static final String TAG = "OrderListActivity";
+    private FirebaseFoodItem test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,35 +42,44 @@ public class OrderListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //Change ICON
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AddNewFoodActivity.class);
                 view.getContext().startActivity(intent);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             orderNumber = bundle.getString(EXTRA_ORDERID);
+            test = bundle.getParcelable(EXTRA_PARCEL_FOOD_ITEM);
         }
         else
         {
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             orderNumber = sharedPreferences.getString(PREF_CURRENT_LIST,"NONE");
         }
-
-        tvOrderNumber = findViewById(R.id.tv_order_list_title);
-        tvOrderNumber.setText(orderNumber);
-
+        if (tvOrderNumber != null) {
+            tvOrderNumber = findViewById(R.id.tv_order_list_title);
+            tvOrderNumber.setText(orderNumber);
+        }
+        if (test != null)
+        {
+            tvOrderTest = findViewById(R.id.tv_order_list_test);
+            tvOrderTest.setText(test.getName());
+        }
     }
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        orderNumber = sharedPreferences.getString(PREF_CURRENT_LIST,"NONE");
+        tvOrderNumber = findViewById(R.id.tv_order_list_title);
+        String orderID = getString(R.string.order_id_label) + orderNumber;
+        tvOrderNumber.setText(orderID);
+    }
 }
