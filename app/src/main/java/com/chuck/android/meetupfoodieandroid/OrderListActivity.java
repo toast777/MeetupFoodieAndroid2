@@ -15,7 +15,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter;
+import com.chuck.android.meetupfoodieandroid.adapters.FoodListAdapter;
+import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodItem;
+import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodTopping;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +39,13 @@ public class OrderListActivity extends AppCompatActivity {
     private TextView tvOrderNumber;
     private TextView tvOrderTest;
     private String orderNumber;
-    private FirebaseFoodItem test;
+    private FirebaseFoodItem addedFood;
+
+    private static final String TAG = "OrderFoodActivity";
+    List<CustomFoodItem> foodlistItems = new ArrayList<>();
+    private RecyclerView rvOrderFoodList;
+    private FoodListAdapter adapter;
+    LinearLayoutManager foodListLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +67,9 @@ public class OrderListActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             orderNumber = bundle.getString(EXTRA_ORDERID);
-            test = bundle.getParcelable(EXTRA_PARCEL_FOOD_ITEM);
+            addedFood = bundle.getParcelable(EXTRA_PARCEL_FOOD_ITEM);
         }
-        else
+        if (orderNumber == null)
         {
             final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             orderNumber = sharedPreferences.getString(PREF_CURRENT_LIST,"NONE");
@@ -67,11 +78,47 @@ public class OrderListActivity extends AppCompatActivity {
             tvOrderNumber = findViewById(R.id.tv_order_list_title);
             tvOrderNumber.setText(orderNumber);
         }
-        if (test != null)
+        rvOrderFoodList = findViewById(R.id.rv_order_food);
+        initRecyclerView();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        assert currentUser != null;
+        DatabaseReference ordersRef = database.getReference("users").child(currentUser.getUid()).child("Orders").child(orderNumber).child("foodItems");
+
+
+
+
+        if (addedFood != null)
         {
-            tvOrderTest = findViewById(R.id.tv_order_list_test);
-            tvOrderTest.setText(test.getName());
+            //Firebase Stuff
+            //foodlistItems.add(new CustomFoodItem(addedFood,0,new ArrayList<FirebaseFoodTopping>()));
+            String listKey = ordersRef.push().getKey();
+            assert listKey != null;
+
+            CustomFoodItem customAddedFood = new CustomFoodItem(addedFood,0,new ArrayList<FirebaseFoodTopping>(),listKey);
+            ordersRef.child(listKey).setValue(customAddedFood);
         }
+
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    CustomFoodItem food = snapshot.getValue(CustomFoodItem.class);
+                    foodlistItems.add(food);
+                    Log.i(TAG, "food loaded");
+                }
+                adapter.setFoodList(foodlistItems);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "loadPost:onCancelled", error.toException());
+            }
+        });
+
+        //Add RView for firebase food
+
     }
     @Override
     protected void onResume() {
@@ -81,5 +128,11 @@ public class OrderListActivity extends AppCompatActivity {
         tvOrderNumber = findViewById(R.id.tv_order_list_title);
         String orderID = getString(R.string.order_id_label) + orderNumber;
         tvOrderNumber.setText(orderID);
+    }
+    private void initRecyclerView() {
+        foodListLayoutManager = new LinearLayoutManager(this);
+        rvOrderFoodList.setLayoutManager(foodListLayoutManager);
+        adapter = new FoodListAdapter();
+        rvOrderFoodList.setAdapter(adapter);
     }
 }

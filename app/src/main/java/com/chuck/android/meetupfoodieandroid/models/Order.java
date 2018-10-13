@@ -1,18 +1,19 @@
 package com.chuck.android.meetupfoodieandroid.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
     private String id;
     private String region;
     private String date;
-    private int total;
+    private Double total;
     private String location;
     private String restaurant;
-    private List<customFoodItem> foodItems;
+    private List<CustomFoodItem> foodItems;
 
-    public Order(String id,String region, String date, int total,String location, String restaurant)
+    public Order(String id,String region, String date, Double total,String location, String restaurant, List<CustomFoodItem> foodItems)
     {
         this.id = id;
         this.region = region;
@@ -20,7 +21,15 @@ public class Order {
         this.total = total;
         this.location = location;
         this.restaurant = restaurant;
-        this.foodItems = new ArrayList<>();
+        this.foodItems = foodItems;
+    }
+    //Simple Constructor
+    public Order(String id,String region,String date)
+    {
+        this.id = id;
+        this.region = region;
+        this.date = date;
+        total = 0.00;
     }
     //Needed for firebase
     public Order(){}
@@ -41,11 +50,11 @@ public class Order {
         this.date = date;
     }
 
-    public int getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -73,17 +82,17 @@ public class Order {
         this.restaurant = restaurant;
     }
 
-    public List<customFoodItem> getFoodItems() {
+    public List<CustomFoodItem> getFoodItems() {
         return foodItems;
     }
 
-    public void setFoodItems(List<customFoodItem> foodItems) {
+    public void setFoodItems(List<CustomFoodItem> foodItems) {
         this.foodItems = foodItems;
     }
-    public void addFoodItems(customFoodItem foodItem){
+    public void addFoodItems(CustomFoodItem foodItem){
         this.foodItems.add(foodItem);
     }
-    public void deleteFoodItems(customFoodItem foodItem){
+    public void deleteFoodItems(CustomFoodItem foodItem){
         this.foodItems.clear();
     }
 }

@@ -1,6 +1,9 @@
 package com.chuck.android.meetupfoodieandroid.models;
 
-public class FirebaseFoodTopping {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FirebaseFoodTopping implements Parcelable{
     private String name;
     private String imgSrc;
     private double price;
@@ -35,4 +38,35 @@ public class FirebaseFoodTopping {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    protected FirebaseFoodTopping(Parcel in) {
+        name = in.readString();
+        imgSrc = in.readString();
+        price = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(imgSrc);
+        dest.writeDouble(price);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<FirebaseFoodTopping> CREATOR = new Parcelable.Creator<FirebaseFoodTopping>() {
+        @Override
+        public FirebaseFoodTopping createFromParcel(Parcel in) {
+            return new FirebaseFoodTopping(in);
+        }
+
+        @Override
+        public FirebaseFoodTopping[] newArray(int size) {
+            return new FirebaseFoodTopping[size];
+        }
+    };
 }

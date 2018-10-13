@@ -102,7 +102,7 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
                 break;
             case TYPE_CELL:
                 holder.orderID.setText((orderList.get(position-1).getId()).substring(0, 6));
-                holder.orderDate.setText(orderList.get(position-1).getDate().toString());
+                holder.orderDate.setText(orderList.get(position - 1).getDate());
                 holder.orderTotal.setText(Double.toString(orderList.get(position-1).getTotal()));
                 break;
         }
