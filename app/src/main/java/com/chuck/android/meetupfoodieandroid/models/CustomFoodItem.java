@@ -47,6 +47,7 @@ public class CustomFoodItem implements Parcelable{
     protected CustomFoodItem(Parcel in) {
         foodItem = (FirebaseFoodItem) in.readValue(FirebaseFoodItem.class.getClassLoader());
         customPrice = in.readDouble();
+        id = in.readString();
         if (in.readByte() == 0x01) {
             toppings = new ArrayList<FirebaseFoodTopping>();
             in.readList(toppings, FirebaseFoodTopping.class.getClassLoader());
@@ -64,6 +65,7 @@ public class CustomFoodItem implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(foodItem);
         dest.writeDouble(customPrice);
+        dest.writeString(id);
         if (toppings == null) {
             dest.writeByte((byte) (0x00));
         } else {

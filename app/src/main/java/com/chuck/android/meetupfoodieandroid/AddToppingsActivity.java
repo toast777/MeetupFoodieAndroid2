@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter;
+import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodItem;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,17 +23,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddToppingsActivity extends AppCompatActivity {
+import static com.chuck.android.meetupfoodieandroid.adapters.FoodListAdapter.EXTRA_PARCEL_CUSTOM_FOOD_ITEM;
 
+public class AddToppingsActivity extends AppCompatActivity {
+    TextView topTitle;
+    CustomFoodItem customizedFoodItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_toppings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        topTitle = findViewById(R.id.tv_addTop_title);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            customizedFoodItem = bundle.getParcelable(EXTRA_PARCEL_CUSTOM_FOOD_ITEM);
+        }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        topTitle.setText(customizedFoodItem.getId());
+
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

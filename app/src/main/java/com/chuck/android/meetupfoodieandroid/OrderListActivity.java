@@ -37,7 +37,6 @@ import static com.chuck.android.meetupfoodieandroid.adapters.OrderLoadAdapter.EX
 
 public class OrderListActivity extends AppCompatActivity {
     private TextView tvOrderNumber;
-    private TextView tvOrderTest;
     private String orderNumber;
     private FirebaseFoodItem addedFood;
 
@@ -116,9 +115,7 @@ public class OrderListActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", error.toException());
             }
         });
-
         //Add RView for firebase food
-
     }
     @Override
     protected void onResume() {
