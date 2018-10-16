@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.AddToppingsActivity;
+import com.chuck.android.meetupfoodieandroid.ListToppingsActivity;
 import com.chuck.android.meetupfoodieandroid.OrderListActivity;
 import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
@@ -37,7 +38,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodIt
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Intent myIntent = new Intent(view.getContext(), AddToppingsActivity.class);
+            Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
             Intent intent = myIntent.putExtra(EXTRA_PARCEL_CUSTOM_FOOD_ITEM, foodList.get(position));
             view.getContext().startActivity(myIntent);
         }

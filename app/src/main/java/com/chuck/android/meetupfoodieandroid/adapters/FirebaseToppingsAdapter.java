@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chuck.android.meetupfoodieandroid.ListToppingsActivity;
 import com.chuck.android.meetupfoodieandroid.OrderListActivity;
 import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
@@ -36,7 +37,7 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Intent myIntent = new Intent(view.getContext(), OrderListActivity.class);
+            Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
             Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_TOPPING, toppingList.get(position));
             view.getContext().startActivity(myIntent);
         }
@@ -53,7 +54,7 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
     public void onBindViewHolder(@NonNull FirebaseToppingsAdapter.FoodItemViewHolder holder, int position) {
         if (toppingList != null)
         {
-            holder.foodName.setText( (toppingList.get(position).getName()) );
+            holder.foodName.setText( (toppingList.get(position).getToppingName()) );
             holder.foodPrice.setText(Double.toString(toppingList.get(position).getPrice()));
         }
     }

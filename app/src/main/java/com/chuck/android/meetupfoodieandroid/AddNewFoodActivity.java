@@ -48,6 +48,7 @@ public class AddNewFoodActivity extends AppCompatActivity {
         initRecyclerView();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        // TODO: 10/16/2018 Fix
         DatabaseReference myRef = database.getReference("Kansas City").child("Papa Johns");
 
         // Read from the database - in wrong activity :P

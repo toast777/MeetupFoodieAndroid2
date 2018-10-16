@@ -34,6 +34,8 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        FirebaseApp.initializeApp(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
         setContentView(R.layout.activity_start);
 
@@ -55,6 +57,7 @@ public class StartActivity extends AppCompatActivity {
         if ( !(sharedPreferences.contains(PREF_REGION)) ) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference();
+
             final String TAG = "Start Activity" ;
             final RadioGroup radioRegions = findViewById(R.id.rg_region);
             myRef.child("Regions").addValueEventListener(new ValueEventListener() {

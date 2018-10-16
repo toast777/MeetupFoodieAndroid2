@@ -4,23 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class FirebaseFoodTopping implements Parcelable{
-    private String name;
+    private String toppingName;
     private String imgSrc;
     private double price;
 
     public FirebaseFoodTopping(String name, String imgSrc, double price) {
-        this.name = name;
+        this.toppingName = name;
         this.imgSrc = imgSrc;
         this.price = price;
     }
     public FirebaseFoodTopping(){}
 
-    public String getName() {
-        return name;
+    public String getToppingName() {
+        return toppingName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setToppingName(String name) {
+        this.toppingName = name;
     }
 
     public String getImgSrc() {
@@ -40,7 +40,7 @@ public class FirebaseFoodTopping implements Parcelable{
     }
 
     protected FirebaseFoodTopping(Parcel in) {
-        name = in.readString();
+        toppingName = in.readString();
         imgSrc = in.readString();
         price = in.readDouble();
     }
@@ -52,7 +52,7 @@ public class FirebaseFoodTopping implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
+        dest.writeString(toppingName);
         dest.writeString(imgSrc);
         dest.writeDouble(price);
     }
