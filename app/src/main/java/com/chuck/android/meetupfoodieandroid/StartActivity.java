@@ -89,6 +89,8 @@ public class StartActivity extends AppCompatActivity {
                     editor.putString(PREF_REGION, radioBtn.getText().toString());
                     editor.apply();
                     Toast.makeText(StartActivity.this, radioBtn.getText(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), OrderLoadActivity.class);
+                    startActivity(intent);
                 }
             });
         }

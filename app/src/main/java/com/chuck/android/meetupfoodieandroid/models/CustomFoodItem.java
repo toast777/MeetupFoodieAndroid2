@@ -9,11 +9,11 @@ import java.util.List;
 public class CustomFoodItem implements Parcelable{
     private FirebaseFoodItem foodItem;
     private String id;
-    private double customPrice;
+    private Double customPrice;
     private List<FirebaseFoodTopping> toppings;
 
 
-    public CustomFoodItem(FirebaseFoodItem foodItem, double customPrice, List<FirebaseFoodTopping> toppings,String id) {
+    public CustomFoodItem(FirebaseFoodItem foodItem, Double customPrice, List<FirebaseFoodTopping> toppings,String id) {
         this.foodItem = foodItem;
         this.customPrice = customPrice;
         this.toppings = toppings;
@@ -29,11 +29,11 @@ public class CustomFoodItem implements Parcelable{
         this.foodItem = foodItem;
     }
 
-    public double getCustomPrice() {
+    public Double getCustomPrice() {
         return customPrice;
     }
 
-    public void setCustomPrice(double customPrice) {
+    public void setCustomPrice(Double customPrice) {
         this.customPrice = customPrice;
     }
 

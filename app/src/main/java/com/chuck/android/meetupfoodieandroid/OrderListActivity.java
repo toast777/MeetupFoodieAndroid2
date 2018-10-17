@@ -95,7 +95,7 @@ public class OrderListActivity extends AppCompatActivity {
             String listKey = ordersRef.push().getKey();
             assert listKey != null;
 
-            CustomFoodItem customAddedFood = new CustomFoodItem(addedFood,0,new ArrayList<FirebaseFoodTopping>(),listKey);
+            CustomFoodItem customAddedFood = new CustomFoodItem(addedFood,0.00,new ArrayList<FirebaseFoodTopping>(),listKey);
             ordersRef.child(listKey).setValue(customAddedFood);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -106,8 +106,20 @@ public class OrderListActivity extends AppCompatActivity {
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                List<FirebaseFoodTopping> toppings = new ArrayList<>();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CustomFoodItem food = snapshot.getValue(CustomFoodItem.class);
+                    Double customPrice = snapshot.child("customPrice").getValue(Double.class);
+                    FirebaseFoodItem foodItem = snapshot.child("fooditem").getValue(FirebaseFoodItem.class);
+                    if (dataSnapshot.child("toppings").exists())
+                    {
+                        for (DataSnapshot snapshot2 : dataSnapshot.child("toppings").getChildren())
+                        {
+                            toppings.add(snapshot2.getValue(FirebaseFoodTopping.class));
+                        }
+                    }
+                    String id = snapshot.child("id").getValue(String.class);
+                    CustomFoodItem food = new CustomFoodItem(foodItem,customPrice,toppings,id);
                     // TODO: 10/16/2018 crashes need to map class 
                     foodlistItems.add(food);
                     Log.i(TAG, "food loaded");
