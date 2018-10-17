@@ -110,7 +110,7 @@ public class OrderListActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Double customPrice = snapshot.child("customPrice").getValue(Double.class);
-                    FirebaseFoodItem foodItem = snapshot.child("fooditem").getValue(FirebaseFoodItem.class);
+                    FirebaseFoodItem foodItem = snapshot.child("foodItem").getValue(FirebaseFoodItem.class);
                     if (dataSnapshot.child("toppings").exists())
                     {
                         for (DataSnapshot snapshot2 : dataSnapshot.child("toppings").getChildren())
@@ -120,7 +120,7 @@ public class OrderListActivity extends AppCompatActivity {
                     }
                     String id = snapshot.child("id").getValue(String.class);
                     CustomFoodItem food = new CustomFoodItem(foodItem,customPrice,toppings,id);
-                    // TODO: 10/16/2018 crashes need to map class 
+                    // TODO: 10/16/2018 crashes need to map class
                     foodlistItems.add(food);
                     Log.i(TAG, "food loaded");
                 }
@@ -132,6 +132,8 @@ public class OrderListActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", error.toException());
             }
         });
+
+
         //Add RView for firebase food
     }
 //    @Override

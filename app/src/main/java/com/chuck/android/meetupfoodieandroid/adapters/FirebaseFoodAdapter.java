@@ -20,14 +20,12 @@ public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapte
     private List<FirebaseFoodItem> foodList;
     public static final String EXTRA_PARCEL_FOOD_ITEM = "foodItem";
 
+
     public class FoodItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ConstraintLayout foodLayout;
         TextView foodName;
         TextView foodPrice;
         FoodItemViewHolder(View v) {
             super(v);
-            //Define Viewholder Text objects
-            foodLayout = v.findViewById(R.id.rv_firebase_food);
             foodName = v.findViewById(R.id.rvtv_food_name);
             foodPrice = v.findViewById(R.id.rvtv_food_price);
             v.setOnClickListener(this);
