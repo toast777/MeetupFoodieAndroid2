@@ -29,37 +29,33 @@ public class StartActivity extends AppCompatActivity {
     private static final List<String> regionArray = new ArrayList<>();
     public static final String CONSTANT_NONE = "NONE";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       FirebaseApp.initializeApp(this);
+        //Init Firebase
+        FirebaseApp.initializeApp(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-
-        setContentView(R.layout.activity_start);
-
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-        //Log in Anonymous - more auth choices in future
-
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-
+        //Log in Anonymous - more auth choices in future
         if (currentUser == null) {
             FirebaseLogin fLogin = new FirebaseLogin();
         }
 
+        setContentView(R.layout.activity_start);
 
+        //Init SharedPrefs
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        //If region pref is not set
         if ( !(sharedPreferences.contains(PREF_REGION)) ) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference();
 
             final String TAG = "Start Activity" ;
             final RadioGroup radioRegions = findViewById(R.id.rg_region);
+            //Load Regions from Firebase
             myRef.child("Regions").addValueEventListener(new ValueEventListener() {
                 int counter = 0;
                 @Override
@@ -80,22 +76,24 @@ public class StartActivity extends AppCompatActivity {
                     Log.w(TAG, "loadPost:onCancelled", error.toException());
                 }
             });
-            //set listener to radio button group
+            //set listener to regions radio button group
             radioRegions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int regionID) {
                     int selectedRadioButtonId = radioRegions.getCheckedRadioButtonId();
                     RadioButton radioBtn = findViewById(selectedRadioButtonId);
+                    //Save the Pref
                     editor.putString(PREF_REGION, radioBtn.getText().toString());
                     editor.apply();
                     Toast.makeText(StartActivity.this, radioBtn.getText(), Toast.LENGTH_SHORT).show();
+                    //Goto Order Load Screen
                     Intent intent = new Intent(getApplicationContext(), OrderLoadActivity.class);
                     startActivity(intent);
                 }
             });
         }
 
-        //Goto to next Activity if Firebase Logged in and SharedPref set
+        //Goto Order Load Screen if Firebase Logged in and SharedPref set
         if (sharedPreferences.contains(PREF_REGION) && (currentUser != null))
         {
             Intent intent = new Intent(getApplicationContext(), OrderLoadActivity.class);

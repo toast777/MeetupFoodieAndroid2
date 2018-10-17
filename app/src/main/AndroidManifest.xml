@@ -66,7 +66,9 @@
             android:label="@string/title_activity_order_summary"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ListToppingsActivity">
+        <activity android:name=".ListToppingsActivity"
+                  android:parentActivityName=".OrderListActivity"
+            >
         </activity>
         <activity
             android:name=".OrderSelectRestActivity"

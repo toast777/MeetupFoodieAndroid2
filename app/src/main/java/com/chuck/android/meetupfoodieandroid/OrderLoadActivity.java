@@ -165,41 +165,32 @@ public class OrderLoadActivity extends AppCompatActivity {
         assert listKey != null;
         userRef.child(currentUser.getUid()).child("Orders").child(listKey).setValue(newOrder);
 
-        //TODO: Firebase set current order to NONE
-        //TODO: Create Firebase user area - customize security so user can modify area
-        // TODO: 10/8/2018 goto selectrest
+
         Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
         startActivity(intent);
     }
     public void loadLastOrder(View view) {
-        // TODO: 10/8/2018 goto orderlist
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if ((sharedPreferences.contains(PREF_REST) & sharedPreferences.contains(PREF_CURRENT_LOCATION)))
         {
             String restName = sharedPreferences.getString(PREF_REST,CONSTANT_NONE);
             String location = sharedPreferences.getString(PREF_CURRENT_LOCATION,CONSTANT_NONE);
-            if (restName.equals(CONSTANT_NONE))
-            {
+            if (restName.equals(CONSTANT_NONE)) {
                 Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
                 startActivity(intent);
             }
-            else if (location.equals(CONSTANT_NONE))
-            {
+            else if (location.equals(CONSTANT_NONE)) {
                 Intent intent = new Intent(getApplicationContext(), OrderSelectLocationActivity.class);
                 startActivity(intent);
             }
-            else
-            {
+            else {
                 Intent intent = new Intent(getApplicationContext(), OrderListActivity.class);
                 startActivity(intent);
             }
         }
         else
-        {
             Toast.makeText(this, R.string.error_load_last, Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     @Override

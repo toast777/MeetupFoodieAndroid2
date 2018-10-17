@@ -53,9 +53,9 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodIt
 
     @Override
     public void onBindViewHolder(@NonNull FoodListAdapter.FoodItemViewHolder holder, int position) {
-        String name = foodList.get(position).getFoodItem().getName();
         if (foodList != null)
         {
+            String name = foodList.get(position).getFoodItem().getName();
             holder.foodName.setText( (foodList.get(position).getFoodItem().getName()) );
             holder.foodPrice.setText(Double.toString(foodList.get(position).getFoodItem().getPrice()));
             //What do we populate textview with

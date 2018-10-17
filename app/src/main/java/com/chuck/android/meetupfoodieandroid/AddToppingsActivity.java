@@ -75,7 +75,7 @@ public class AddToppingsActivity extends AppCompatActivity {
                     mFoodToppings.add(topping);
                     Log.i(TAG, "food loaded");
                 }
-                toppingsAdapter.setToppingList(mFoodToppings);
+                toppingsAdapter.setToppingList(mFoodToppings,true,0);
 
             }
             @Override

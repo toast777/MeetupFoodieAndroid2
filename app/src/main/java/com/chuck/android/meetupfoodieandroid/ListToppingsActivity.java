@@ -35,12 +35,15 @@ import static com.chuck.android.meetupfoodieandroid.adapters.FoodListAdapter.EXT
 
 public class ListToppingsActivity extends AppCompatActivity {
     CustomFoodItem customizedFoodItem;
+    CustomFoodItem customFood;
     FirebaseFoodTopping topping;
     List<FirebaseFoodTopping> mFoodToppings = new ArrayList<>();
     private SharedPreferences.Editor editor;
     private SharedPreferences sharedPreferences;
     public static final String PREF_CURRENT_FOOD_ITEM = "Current Food Item";
     public static final String PREF_ALLOWED_TOPPINGS = "Free Toppings";
+    public static final String PREF_USED_TOPPINGS = "Used Toppings";
+
     private RecyclerView rvFoodToppings;
     private FirebaseToppingsAdapter toppingsAdapter;
     LinearLayoutManager toppingsLayoutManager;
@@ -48,7 +51,7 @@ public class ListToppingsActivity extends AppCompatActivity {
 
 
     private TextView toppingsListTitle;
-    private TextView toppingsListTest;
+    private TextView toppingsFreeTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,31 @@ public class ListToppingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_toppings);
 
         FloatingActionButton fab = findViewById(R.id.fab_add_toppings);
+        rvFoodToppings = findViewById(R.id.rv_list_toppings);
+        initRecyclerView();
+        toppingsListTitle = findViewById(R.id.tv_toppings_list_title);
+        toppingsFreeTitle = findViewById(R.id.tv_included_toppings);
+
+        //Load and save Shared Prefs
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = sharedPreferences.edit();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            customizedFoodItem = bundle.getParcelable(EXTRA_PARCEL_CUSTOM_FOOD_ITEM);
+            topping = bundle.getParcelable(EXTRA_PARCEL_FOOD_TOPPING);
+            if (customizedFoodItem != null) {
+                editor.putString(PREF_CURRENT_FOOD_ITEM,customizedFoodItem.getId());
+                editor.putInt(PREF_ALLOWED_TOPPINGS,customizedFoodItem.getFoodItem().getNumAddOns());
+                editor.apply();
+            }
+            editor.apply();
+        }
+        String customizedFoodId = sharedPreferences.getString(PREF_CURRENT_FOOD_ITEM,CONSTANT_NONE);
+        String orderID = sharedPreferences.getString(PREF_CURRENT_LIST,CONSTANT_NONE);
+        final int numAddons = sharedPreferences.getInt(PREF_ALLOWED_TOPPINGS,0);
+
+        toppingsFreeTitle.setText("Included Toppings: " + Integer.toString(numAddons) );
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,28 +92,6 @@ public class ListToppingsActivity extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
-
-
-        Bundle bundle = getIntent().getExtras();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = sharedPreferences.edit();
-
-        if (bundle != null){
-            customizedFoodItem = bundle.getParcelable(EXTRA_PARCEL_CUSTOM_FOOD_ITEM);
-            topping = bundle.getParcelable(EXTRA_PARCEL_FOOD_TOPPING);
-           if (customizedFoodItem != null)
-            {
-                editor.putString(PREF_CURRENT_FOOD_ITEM,customizedFoodItem.getId());
-                editor.putInt(PREF_ALLOWED_TOPPINGS,customizedFoodItem.getFoodItem().getNumAddOns());
-            }
-            editor.apply();
-        }
-
-        String customizedFoodId = sharedPreferences.getString(PREF_CURRENT_FOOD_ITEM,CONSTANT_NONE);
-        String orderID = sharedPreferences.getString(PREF_CURRENT_LIST,CONSTANT_NONE);
-        int freeToppings = sharedPreferences.getInt(PREF_ALLOWED_TOPPINGS,0);
-        //load user id
-
         //check if you have a food id and an order id
         if (customizedFoodId.equals(CONSTANT_NONE) || orderID.equals(CONSTANT_NONE)){
             //display error
@@ -93,30 +99,24 @@ public class ListToppingsActivity extends AppCompatActivity {
         else {
             //Load the toppings list from firebase
             //Load DB with references above
-            toppingsListTitle = findViewById(R.id.tv_toppings_list_title);
-            toppingsListTest = findViewById(R.id.tv_included_toppings);
-
+            //Init firebase and get current user
             FirebaseAuth auth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = auth.getCurrentUser();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             assert currentUser != null;
+
             DatabaseReference toppingRef = database.getReference("users")
                     .child(currentUser.getUid()).child("Orders").child(orderID)
                     .child("foodItems").child(customizedFoodId).child(CONST_TOPPINGS);
 
+
+
             toppingsListTitle.setText(getString(R.string.food_id_label, customizedFoodId));
             if (topping != null){
-
-
                 String toppingKey = toppingRef.push().getKey();
                 assert toppingKey != null;
                 toppingRef.child(toppingKey).setValue(topping);
-
             }
-            toppingsListTest.setText("Included Toppings: " + Integer.toString(freeToppings));
-            rvFoodToppings = findViewById(R.id.rv_list_toppings);
-            initRecyclerView();
-
 
             toppingRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -126,7 +126,7 @@ public class ListToppingsActivity extends AppCompatActivity {
                         mFoodToppings.add(topping);
                         Log.i(TAG, "food loaded");
                     }
-                    toppingsAdapter.setToppingList(mFoodToppings);
+                    toppingsAdapter.setToppingList(mFoodToppings,false,numAddons);
 
                 }
                 @Override

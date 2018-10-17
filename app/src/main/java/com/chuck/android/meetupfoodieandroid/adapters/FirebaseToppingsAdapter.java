@@ -21,6 +21,8 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
 
     private List<FirebaseFoodTopping> toppingList;
     public static final String EXTRA_PARCEL_FOOD_TOPPING = "foodTopping";
+    private boolean allowClick;
+    private int numToppingsFree;
 
     public class FoodItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ConstraintLayout foodLayout;
@@ -36,10 +38,12 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
         }
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
-            Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
-            Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_TOPPING, toppingList.get(position));
-            view.getContext().startActivity(myIntent);
+            if (allowClick) {
+                int position = getAdapterPosition();
+                Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
+                Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_TOPPING, toppingList.get(position));
+                view.getContext().startActivity(myIntent);
+            }
         }
     }
     @NonNull
@@ -55,11 +59,16 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
         if (toppingList != null)
         {
             holder.foodName.setText( (toppingList.get(position).getToppingName()) );
-            holder.foodPrice.setText(Double.toString(toppingList.get(position).getPrice()));
+            if (position < numToppingsFree)
+                holder.foodPrice.setText(Double.toString(0.00));
+            else
+                holder.foodPrice.setText(Double.toString(toppingList.get(position).getPrice()));
         }
     }
-    public void setToppingList(List<FirebaseFoodTopping> currentFoodList) {
+    public void setToppingList(List<FirebaseFoodTopping> currentFoodList,boolean allowClick,int numToppingsFree) {
+        this.allowClick = allowClick;
         this.toppingList = currentFoodList;
+        this.numToppingsFree = numToppingsFree;
         notifyDataSetChanged();
     }
     @Override

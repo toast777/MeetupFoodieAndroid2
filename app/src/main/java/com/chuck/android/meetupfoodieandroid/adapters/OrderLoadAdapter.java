@@ -36,13 +36,11 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
         else
             return TYPE_CELL;
     }
-
     public class OrderLoadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ConstraintLayout orderLayout;
         TextView orderID;
         TextView orderDate;
         TextView orderTotal;
-
 
         OrderLoadViewHolder(View v) {
             super(v);
@@ -78,7 +76,6 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
                    intent.putExtra(EXTRA_ORDERID,orderList.get(position-1).getId());
                    view.getContext().startActivity(intent);
                }
-
             }
         }
     }

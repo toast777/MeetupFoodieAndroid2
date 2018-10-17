@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.chuck.android.meetupfoodieandroid.ListToppingsActivity.PREF_ALLOWED_TOPPINGS;
 import static com.chuck.android.meetupfoodieandroid.ListToppingsActivity.PREF_CURRENT_FOOD_ITEM;
+import static com.chuck.android.meetupfoodieandroid.ListToppingsActivity.PREF_USED_TOPPINGS;
 import static com.chuck.android.meetupfoodieandroid.OrderLoadActivity.PREF_CURRENT_LIST;
 import static com.chuck.android.meetupfoodieandroid.StartActivity.CONSTANT_NONE;
 import static com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter.EXTRA_PARCEL_FOOD_ITEM;
@@ -41,6 +43,8 @@ public class OrderListActivity extends AppCompatActivity {
     private TextView tvOrderNumber;
     private String orderNumber;
     private FirebaseFoodItem addedFood;
+    public static final String PREF_CURRENT_FOOD_ITEM_PRICE = "Custom Food Price";
+
 
     private static final String TAG = "OrderFoodActivity";
     List<CustomFoodItem> foodlistItems = new ArrayList<>();
@@ -53,7 +57,7 @@ public class OrderListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //Change ICON
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -100,6 +104,9 @@ public class OrderListActivity extends AppCompatActivity {
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(PREF_CURRENT_FOOD_ITEM, listKey);
+            editor.putInt(PREF_ALLOWED_TOPPINGS,customAddedFood.getFoodItem().getNumAddOns());
+            editor.putInt(PREF_USED_TOPPINGS,customAddedFood.getFoodItem().getNumAddOns());
+            editor.putFloat(PREF_CURRENT_FOOD_ITEM_PRICE,(float)(customAddedFood.getFoodItem().getPrice()));
             editor.apply();
         }
 
@@ -111,9 +118,9 @@ public class OrderListActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Double customPrice = snapshot.child("customPrice").getValue(Double.class);
                     FirebaseFoodItem foodItem = snapshot.child("foodItem").getValue(FirebaseFoodItem.class);
-                    if (dataSnapshot.child("toppings").exists())
+                    if (snapshot.child("toppings").exists())
                     {
-                        for (DataSnapshot snapshot2 : dataSnapshot.child("toppings").getChildren())
+                        for (DataSnapshot snapshot2 : snapshot.child("toppings").getChildren())
                         {
                             toppings.add(snapshot2.getValue(FirebaseFoodTopping.class));
                         }
