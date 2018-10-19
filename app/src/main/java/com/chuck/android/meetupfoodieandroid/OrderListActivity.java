@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter;
@@ -81,6 +82,7 @@ public class OrderListActivity extends AppCompatActivity {
             orderNumber = sharedPreferences.getString(PREF_CURRENT_LIST,"NONE");
         }
 
+        Button submitTotal = findViewById(R.id.bt_order_list_total);
         tvOrderNumber = findViewById(R.id.tv_order_list_title);
         tvOrderNumber.setText(orderNumber);
 
@@ -139,7 +141,13 @@ public class OrderListActivity extends AppCompatActivity {
                 Log.w(TAG, "loadPost:onCancelled", error.toException());
             }
         });
-
+        submitTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), OrderSummaryActivity.class);
+                view.getContext().startActivity(myIntent);
+            }
+        });
 
         //Add RView for firebase food
     }

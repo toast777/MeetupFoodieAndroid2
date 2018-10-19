@@ -53,11 +53,12 @@ import static com.chuck.android.meetupfoodieandroid.StartActivity.PREF_REGION;
 
 public class OrderLoadActivity extends AppCompatActivity {
     public static final String PREF_CURRENT_LIST = "Current List Key";
+    private static final String TAG = "Order Load Activity" ;
+
     List<Order> orders = new ArrayList<>();
     private RecyclerView rvOrderList;
     private OrderLoadAdapter adapter;
     LinearLayoutManager orderLayoutManager;
-    private static final String TAG = "Order Load Activity" ;
     private TextView loadInstructions;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
