@@ -21,4 +21,6 @@
     <string name="app_logo">App Logo</string>
     <string name="click_on_topping_to_add_to_order">Click on Topping to Add to Order</string>
     <string name="food_id_label">Food ID: %s</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

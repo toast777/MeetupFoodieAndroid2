@@ -116,7 +116,7 @@ public class OrderListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<FirebaseFoodTopping> toppings = new ArrayList<>();
-
+                foodlistItems.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Double customPrice = snapshot.child("customPrice").getValue(Double.class);
                     FirebaseFoodItem foodItem = snapshot.child("foodItem").getValue(FirebaseFoodItem.class);
