@@ -1,8 +1,13 @@
 package com.chuck.android.meetupfoodieandroid.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
 import com.chuck.android.meetupfoodieandroid.R;
@@ -12,23 +17,37 @@ import com.chuck.android.meetupfoodieandroid.R;
  */
 public class ShoppingListWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.shopping_list_widget);
-//        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
     }
+
+
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+        // There may be multiple widgets active, so update all of them
+        int[] realAppWidgetIds = AppWidgetManager.getInstance(context)
+                .getAppWidgetIds(new ComponentName(context, ShoppingListWidget.class));
+        for (int id : realAppWidgetIds) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.shopping_list_widget);
+            Intent serviceIntent = new Intent(context, ShoppingListWidgetService.class);
+            remoteViews.setRemoteAdapter(R.id.widgetListView, serviceIntent);
+            //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            //String recipeTitle = sharedPreferences.getString("Recipe Title", "NO RECIPE");
+            remoteViews.setTextViewText(R.id.widget_title, "Shopping List");
+            Intent intent = new Intent(context, ShoppingListWidget.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            remoteViews.setPendingIntentTemplate(R.id.widgetListView, pendingIntent);
+            appWidgetManager.updateAppWidget(id, remoteViews);
         }
     }
 

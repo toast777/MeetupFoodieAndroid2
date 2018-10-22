@@ -1,5 +1,8 @@
 package com.chuck.android.meetupfoodieandroid;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
@@ -15,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import com.chuck.android.meetupfoodieandroid.adapters.FoodListAdapter;
@@ -24,6 +28,7 @@ import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodTopping;
 import com.chuck.android.meetupfoodieandroid.models.Order;
+import com.chuck.android.meetupfoodieandroid.widget.ShoppingListWidget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +36,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +128,23 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 calculateTotals(summaryOrder);
                 orderSummary.setText("Total: " + summaryOrder.getTotal().toString());
                 adapter.setFoodList(summaryOrder.getFoodItems());
+                //Set widget info
+                Context context = getApplicationContext();
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                editor = sharedPreferences.edit();
+                Gson gsonIngList = new Gson();
+                String json = gsonIngList.toJson(summaryOrder.getFoodItems());
+                editor.putString("json1", json);
+                editor.apply();
+                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.shopping_list_widget);
+                //remoteViews.setTextViewText(R.id.widget_title, recipes.get(position).getName() + " Shopping List");
+
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                ComponentName thisWidget = new ComponentName(context, ShoppingListWidget.class);
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widgetListView);
+                appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
             }
             @Override
             public void onCancelled(DatabaseError error) {

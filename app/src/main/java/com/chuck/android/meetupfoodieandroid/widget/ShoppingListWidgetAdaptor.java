@@ -28,7 +28,8 @@ public class ShoppingListWidgetAdaptor implements RemoteViewsService.RemoteViews
 
     private List<CustomFoodItem> getFoodItems() {
         foodItems = null;
-        if ((sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)) != null){
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if ( (sharedPreferences.contains("json1")) ){
             String listJson = sharedPreferences.getString("json1", "No Data");
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<CustomFoodItem>>(){}.getType();
