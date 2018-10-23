@@ -35,20 +35,12 @@ public class AddNewFoodActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rvFoodList = findViewById(R.id.rv_firebase_food);
         initRecyclerView();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        // TODO: 10/16/2018 Fix
         DatabaseReference myRef = database.getReference("Kansas City").child("Papa Johns");
 
         // Read from the database - in wrong activity :P

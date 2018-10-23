@@ -28,12 +28,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class StartActivity extends AppCompatActivity {
     public static final String PREF_REGION = "Region Preference";
     private static final List<String> regionArray = new ArrayList<>();
     public static final String CONSTANT_NONE = "NONE";
     private FirebaseAuth auth;
+    @BindView(R.id.rg_region) RadioGroup radioRegions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +47,10 @@ public class StartActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_start);
+        ButterKnife.bind(this); // bind butterknife
 
         auth = FirebaseAuth.getInstance();
+
         FirebaseUser currentUser = auth.getCurrentUser();
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -69,6 +77,7 @@ public class StartActivity extends AppCompatActivity {
                                 // If sign in fails, display a message to the user.
                                 FirebaseException e =(FirebaseException) task.getException();
                                 Log.w(TAG, "signInAnonymously:failure",e);
+                                Toast.makeText(StartActivity.this, "User Authentication Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             // ...
                         }
@@ -84,7 +93,6 @@ public class StartActivity extends AppCompatActivity {
             DatabaseReference myRef = database.getReference();
 
             final String TAG = "Start Activity" ;
-            final RadioGroup radioRegions = findViewById(R.id.rg_region);
             //Load Regions from Firebase
             myRef.child("Regions").addValueEventListener(new ValueEventListener() {
                 int counter = 0;

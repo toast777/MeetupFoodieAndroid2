@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".OrderStartActivity"
-            android:label="@string/title_activity_order_start"
+            android:label="@string/title_activity_order_start">
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
@@ -44,31 +44,31 @@
         <activity
             android:name=".AddToppingsActivity"
             android:label="@string/title_activity_add_toppings"
-            android:parentActivityName=".OrderListActivity"
+            android:parentActivityName=".ListToppingsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.chuck.android.meetupfoodieandroid.OrderListActivity"/>
+                android:value="com.chuck.android.meetupfoodieandroid.ListToppingsActivity"/>
         </activity>
         <activity
             android:name=".OrderLoadActivity"
             android:label="@string/title_activity_order_load"
-            android:parentActivityName=".OrderListActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.chuck.android.meetupfoodieandroid.OrderListActivity"/>
         </activity>
-        <activity android:name=".SettingsRegionAcitvity">
+        <activity android:name=".SettingsRegionAcitvity"
+                  android:parentActivityName=".OrderLoadActivity">
         </activity>
         <activity
             android:name=".OrderSummaryActivity"
             android:label="@string/title_activity_order_summary"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".OrderListActivity">
         </activity>
         <activity
             android:name=".ListToppingsActivity"
+            android:label="@string/toppings_list"
             android:parentActivityName=".OrderListActivity">
+
         </activity>
         <activity
             android:name=".OrderSelectRestActivity"
@@ -85,7 +85,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".OrderSelectLocationActivity">
+        <activity android:name=".OrderSelectLocationActivity"
+                  android:parentActivityName=".OrderSelectRestActivity">
+
         </activity>
 
         <receiver android:name=".widget.ShoppingListWidget">

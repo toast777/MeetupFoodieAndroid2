@@ -45,6 +45,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_CURRENT_LOCATION;
 import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_REST;
@@ -56,71 +61,67 @@ public class OrderLoadActivity extends AppCompatActivity {
     private static final String TAG = "Order Load Activity" ;
 
     List<Order> orders = new ArrayList<>();
-    private RecyclerView rvOrderList;
+    //Bind UI elements
+    @BindView(R.id.rv_order_list) RecyclerView rvOrderList;
+    @BindView(R.id.tv_load_order_title) TextView loadInstructions;
+    @BindView(R.id.iv_app_logo) ImageView logo;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    //Bind Strings
+    @BindString(R.string.db_id) String dbID;
+    @BindString(R.string.db_location) String dbLocation;
+    @BindString(R.string.db_region) String dbRegion;
+    @BindString(R.string.db_rest) String dbRest;
+    @BindString(R.string.db_food_items) String dbFoodItems;
+    @BindString(R.string.db_total) String dbTotal;
+    @BindString(R.string.db_date) String dbDate;
+    @BindString(R.string.db_users) String dbUsers;
+    @BindString(R.string.db_orders) String dbOrders;
+
+    @BindString(R.string.logo_url) String logoURL;
+
     private OrderLoadAdapter adapter;
     LinearLayoutManager orderLayoutManager;
-    private TextView loadInstructions;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private ImageView logo;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-
-
-    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_load);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        rvOrderList = findViewById(R.id.rv_order_list);
-        loadInstructions = findViewById(R.id.tv_load_order_title);
+        //Disable up arrow since top of hierarchy, startactivity first only on initial load
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         initRecyclerView();
-
-        String logoURL = "https://firebasestorage.googleapis.com/v0/b/fir-foodie.appspot.com/o/foodie_logo.png?alt=media&token=6f83cb6d-64a2-409b-8d43-31a973e3ebfc";
-        logo = findViewById(R.id.iv_app_logo);
         new DownloadImageTask(logo).execute(logoURL);
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference userRef = database.getReference("users");
-
+        DatabaseReference userRef = database.getReference(dbUsers);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         // Read from the database
         assert currentUser != null;
-        userRef.child(currentUser.getUid()).child("Orders").addValueEventListener(new ValueEventListener() {
+        userRef.child(currentUser.getUid()).child(dbOrders).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<CustomFoodItem> customFoodItems = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String id = snapshot.child("id").getValue(String.class);
-                    String location = snapshot.child("location").getValue(String.class);
-                    String region = snapshot.child("region").getValue(String.class);
-                    String restaurant = snapshot.child("restaurant").getValue(String.class);
-                    if (dataSnapshot.child("foodItems").exists())
+                    String id = snapshot.child(dbID).getValue(String.class);
+                    String location = snapshot.child(dbLocation).getValue(String.class);
+                    String region = snapshot.child(dbRegion).getValue(String.class);
+                    String restaurant = snapshot.child(dbRest).getValue(String.class);
+                    if (dataSnapshot.child(dbFoodItems).exists())
                     {
-                        for (DataSnapshot snapshot2 : dataSnapshot.child("foodItems").getChildren())
+                        for (DataSnapshot snapshot2 : dataSnapshot.child(dbFoodItems).getChildren())
                         {
-                            customFoodItems.add(snapshot2.child("foodItems").getValue(CustomFoodItem.class));
+                            customFoodItems.add(snapshot2.child(dbFoodItems).getValue(CustomFoodItem.class));
                         }
                     }
-                    Double total = snapshot.child("total").getValue(Double.class);
-                    String date = snapshot.child("date").getValue(String.class);
+                    Double total = snapshot.child(dbTotal).getValue(Double.class);
+                    String date = snapshot.child(dbDate).getValue(String.class);
 
                     orders.add(new Order(id,region,date,total,location,restaurant, customFoodItems));
                     Log.i(TAG, "order loaded");
@@ -164,7 +165,7 @@ public class OrderLoadActivity extends AppCompatActivity {
         Order newOrder = new Order(listKey,sharedPreferences.getString(PREF_REGION,CONSTANT_NONE),strDate);
 
         assert listKey != null;
-        userRef.child(currentUser.getUid()).child("Orders").child(listKey).setValue(newOrder);
+        userRef.child(currentUser.getUid()).child(dbOrders).child(listKey).setValue(newOrder);
 
 
         Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
@@ -229,10 +230,10 @@ public class OrderLoadActivity extends AppCompatActivity {
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
+            String urlDisplay = urls[0];
             Bitmap bmp = null;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
+                InputStream in = new java.net.URL(urlDisplay).openStream();
                 bmp = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());

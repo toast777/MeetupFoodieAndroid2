@@ -35,7 +35,6 @@ import static com.chuck.android.meetupfoodieandroid.adapters.FoodListAdapter.EXT
 
 public class AddToppingsActivity extends AppCompatActivity {
     TextView topTitle;
-    CustomFoodItem customizedFoodItem;
     private static final String TAG = "AddNewToppingActivity";
     public static final String CONST_TOPPINGS = "toppings";
     List<FirebaseFoodTopping> mFoodToppings = new ArrayList<>();
@@ -52,7 +51,9 @@ public class AddToppingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         topTitle = findViewById(R.id.tv_addTop_title);
-        Bundle bundle = getIntent().getExtras();
+        rvFoodToppings = findViewById(R.id.rv_firebase_topping);
+
+//        Bundle bundle = getIntent().getExtras();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String region = sharedPreferences.getString(PREF_REGION,CONSTANT_NONE);
@@ -61,7 +62,6 @@ public class AddToppingsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
-        rvFoodToppings = findViewById(R.id.rv_firebase_topping);
         initRecyclerView();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();

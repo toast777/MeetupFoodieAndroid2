@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">MeetupFoodieAndroid</string>
-    <string name="title_activity_order_start">OrderStartActivity</string>
-    <string name="title_activity_order_list">OrderListActivity</string>
-    <string name="title_activity_add_new_food">AddNewFoodActivity</string>
-    <string name="title_activity_add_toppings">AddToppingsActivity</string>
-    <string name="title_activity_order_load">OrderLoadActivity</string>
-    <string name="title_activity_order_summary">OrderSummaryActivity</string>
-    <string name="title_activity_order_select_rest">OrderSelectRestActivity</string>
+    <string name="title_activity_order_start">Please Select A Region</string>
+    <string name="title_activity_order_list">Current Order Food</string>
+    <string name="title_activity_add_new_food">Please Select a Food Item</string>
+    <string name="title_activity_add_toppings">Please select a Topping</string>
+    <string name="title_activity_order_load">Load or Start an Order</string>
+    <string name="title_activity_order_summary">Order Summary</string>
+    <string name="title_activity_order_select_rest">Select a Restaurant</string>
     <string name="change_region">Change Region</string>
     <string name="settings_title">Please Select a Region</string>
     <string name="settings_label">Current Region Setting</string>
@@ -23,4 +23,15 @@
     <string name="food_id_label">Food ID: %s</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="toppings_list">Would you like to add some Toppings?</string>
+    <string name="db_id">id</string>
+    <string name="db_location">location</string>
+    <string name="logo_url"><![CDATA[https://firebasestorage.googleapis.com/v0/b/fir-foodie.appspot.com/o/foodie_logo.png?alt=media&token=6f83cb6d-64a2-409b-8d43-31a973e3ebfc]]></string>
+    <string name="db_region">region</string>
+    <string name="db_rest">restaurant</string>
+    <string name="db_food_items">foodItems</string>
+    <string name="db_users">users</string>
+    <string name="db_total">total</string>
+    <string name="db_date">date</string>
+    <string name="db_orders">Orders</string>
 </resources>
