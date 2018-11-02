@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chuck.android.meetupfoodieandroid.adapters.FirebaseToppingsAdapter;
 import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
@@ -82,7 +83,7 @@ public class ListToppingsActivity extends AppCompatActivity {
         String orderID = sharedPreferences.getString(PREF_CURRENT_LIST,CONSTANT_NONE);
         final int numAddons = sharedPreferences.getInt(PREF_ALLOWED_TOPPINGS,0);
 
-        toppingsFreeTitle.setText("Included Toppings: " + Integer.toString(numAddons) );
+        toppingsFreeTitle.setText(String.format(getString(R.string.included_toppings_label), Integer.toString(numAddons)));
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,7 @@ public class ListToppingsActivity extends AppCompatActivity {
         });
         //check if you have a food id and an order id
         if (customizedFoodId.equals(CONSTANT_NONE) || orderID.equals(CONSTANT_NONE)){
-            //display error
+            Toast.makeText(this, R.string.orderid_not_set, Toast.LENGTH_SHORT).show();
         }
         else {
             //Load the toppings list from firebase
@@ -111,7 +112,7 @@ public class ListToppingsActivity extends AppCompatActivity {
 
 
 
-            toppingsListTitle.setText(getString(R.string.food_id_label, customizedFoodId));
+            toppingsListTitle.setText(getString(R.string.food_id_label, customizedFoodId.substring(0, 6)));
             if (topping != null){
                 String toppingKey = toppingRef.push().getKey();
                 assert toppingKey != null;

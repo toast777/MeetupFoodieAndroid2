@@ -1,5 +1,6 @@
 package com.chuck.android.meetupfoodieandroid;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -180,15 +181,15 @@ public class OrderLoadActivity extends AppCompatActivity {
             String location = sharedPreferences.getString(PREF_CURRENT_LOCATION,CONSTANT_NONE);
             if (restName.equals(CONSTANT_NONE)) {
                 Intent intent = new Intent(getApplicationContext(), OrderSelectRestActivity.class);
-                startActivity(intent);
+                startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
             else if (location.equals(CONSTANT_NONE)) {
                 Intent intent = new Intent(getApplicationContext(), OrderSelectLocationActivity.class);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
             else {
                 Intent intent = new Intent(getApplicationContext(), OrderListActivity.class);
-                startActivity(intent);
+                startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             }
         }
         else
@@ -225,7 +226,7 @@ public class OrderLoadActivity extends AppCompatActivity {
     //From Medium Article how to load image async - https://medium.com/@crossphd/android-image-loading-from-a-string-url-6c8290b82c5e
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
+        DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 

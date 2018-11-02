@@ -16,6 +16,7 @@ import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodItemViewHolder>{
 
@@ -39,7 +40,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodIt
         public void onClick(View view) {
             int position = getAdapterPosition();
             Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
-            Intent intent = myIntent.putExtra(EXTRA_PARCEL_CUSTOM_FOOD_ITEM, foodList.get(position));
+            myIntent.putExtra(EXTRA_PARCEL_CUSTOM_FOOD_ITEM, foodList.get(position));
             view.getContext().startActivity(myIntent);
         }
     }
@@ -57,8 +58,8 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodIt
         {
             String name = foodList.get(position).getFoodItem().getName();
             holder.foodName.setText( (foodList.get(position).getFoodItem().getName()) );
-            holder.foodPrice.setText(Double.toString(foodList.get(position).getFoodItem().getPrice()));
-            //What do we populate textview with
+            holder.foodPrice.setText(String.format(Locale.getDefault()
+                    , "%1$,.2f", foodList.get(position).getFoodItem().getPrice()));
         }
     }
     public void setFoodList(List<CustomFoodItem> currentFoodList) {

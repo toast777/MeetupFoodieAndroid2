@@ -1,6 +1,8 @@
 package com.chuck.android.meetupfoodieandroid.adapters;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,11 @@ import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.Order;
 
 import java.util.List;
+import java.util.Locale;
 
+import static com.chuck.android.meetupfoodieandroid.OrderLoadActivity.PREF_CURRENT_LIST;
+import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_CURRENT_LOCATION;
+import static com.chuck.android.meetupfoodieandroid.OrderSelectRestActivity.PREF_REST;
 import static com.chuck.android.meetupfoodieandroid.StartActivity.CONSTANT_NONE;
 
 public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.OrderLoadViewHolder>{
@@ -59,15 +65,24 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
             //Check if position is legend
             if (position != 0)
             {
+                //Saved selected order's shared preferences
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PREF_CURRENT_LIST, orderList.get(position-1).getId());
+                editor.apply();
+
                 String location = orderList.get(position-1).getLocation();
                 String restName = orderList.get(position-1).getRestaurant();
-               if (restName.equals(CONSTANT_NONE))
+               if (restName == null)
                {
                    Intent restIntent = new Intent(view.getContext(), OrderSelectRestActivity.class);
                    view.getContext().startActivity(restIntent);
                }
-               else if (location.equals(CONSTANT_NONE))
+               else if (location == null)
                {
+                   //Store the rest name
+                   editor.putString(PREF_REST,orderList.get(position-1).getRestaurant());
+                   editor.apply();
                    Intent restIntent = new Intent(view.getContext(), OrderSelectLocationActivity.class);
                    view.getContext().startActivity(restIntent);
                }
@@ -75,6 +90,7 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
                    Intent intent = new Intent(view.getContext(), OrderListActivity.class);
                    intent.putExtra(EXTRA_ORDERID,orderList.get(position-1).getId());
                    view.getContext().startActivity(intent);
+
                }
             }
         }
@@ -100,7 +116,8 @@ public class OrderLoadAdapter extends RecyclerView.Adapter<OrderLoadAdapter.Orde
             case TYPE_CELL:
                 holder.orderID.setText((orderList.get(position-1).getId()).substring(0, 6));
                 holder.orderDate.setText(orderList.get(position - 1).getDate());
-                holder.orderTotal.setText(Double.toString(orderList.get(position-1).getTotal()));
+                holder.orderTotal.setText(String.format(Locale.getDefault()
+                        , "%1$,.2f", orderList.get(position-1).getTotal()));
                 break;
         }
     }

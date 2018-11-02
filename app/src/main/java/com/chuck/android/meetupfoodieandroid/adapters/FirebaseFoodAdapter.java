@@ -14,6 +14,7 @@ import com.chuck.android.meetupfoodieandroid.R;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodItem;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapter.FoodItemViewHolder>{
 
@@ -34,7 +35,7 @@ public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapte
         public void onClick(View view) {
             int position = getAdapterPosition();
             Intent myIntent = new Intent(view.getContext(), OrderListActivity.class);
-            Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_ITEM, foodList.get(position));
+            myIntent.putExtra(EXTRA_PARCEL_FOOD_ITEM, foodList.get(position));
             view.getContext().startActivity(myIntent);
         }
     }
@@ -52,8 +53,9 @@ public class FirebaseFoodAdapter extends RecyclerView.Adapter<FirebaseFoodAdapte
         if (foodList != null)
         {
             holder.foodName.setText( (foodList.get(position).getName()) );
-            holder.foodPrice.setText(Double.toString(foodList.get(position).getPrice()));
-            //What do we populate textview with
+
+            holder.foodPrice.setText(String.format(Locale.getDefault()
+                    , "%1$,.2f", foodList.get(position).getPrice()));
         }
     }
     public void setFoodList(List<FirebaseFoodItem> currentFoodList) {

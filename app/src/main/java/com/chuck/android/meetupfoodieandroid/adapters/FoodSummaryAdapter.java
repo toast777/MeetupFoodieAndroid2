@@ -15,6 +15,7 @@ import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodTopping;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FoodSummaryAdapter extends RecyclerView.Adapter<FoodSummaryAdapter.FoodItemViewHolder>{
 
@@ -37,10 +38,6 @@ public class FoodSummaryAdapter extends RecyclerView.Adapter<FoodSummaryAdapter.
         }
         @Override
         public void onClick(View view) {
-//            int position = getAdapterPosition();
-//            Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
-//            Intent intent = myIntent.putExtra(EXTRA_PARCEL_CUSTOM_FOOD_ITEM, foodList.get(position));
-//            view.getContext().startActivity(myIntent);
         }
     }
     @NonNull
@@ -57,7 +54,8 @@ public class FoodSummaryAdapter extends RecyclerView.Adapter<FoodSummaryAdapter.
         {
             String name = foodList.get(position).getFoodItem().getName();
             holder.foodName.setText( (foodList.get(position).getFoodItem().getName()) );
-            holder.foodPrice.setText(Double.toString(foodList.get(position).getCustomPrice()));
+            holder.foodPrice.setText(String.format(Locale.getDefault()
+                    , "%1$,.2f", foodList.get(position).getCustomPrice()));
             List<FirebaseFoodTopping> listOfToppings = foodList.get(position).getToppings();
             int toppingsSize = listOfToppings.size();
             String toppingsText = "";

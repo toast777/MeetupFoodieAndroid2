@@ -16,6 +16,7 @@ import com.chuck.android.meetupfoodieandroid.models.CustomFoodItem;
 import com.chuck.android.meetupfoodieandroid.models.FirebaseFoodTopping;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppingsAdapter.FoodItemViewHolder>{
 
@@ -41,7 +42,7 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
             if (allowClick) {
                 int position = getAdapterPosition();
                 Intent myIntent = new Intent(view.getContext(), ListToppingsActivity.class);
-                Intent intent = myIntent.putExtra(EXTRA_PARCEL_FOOD_TOPPING, toppingList.get(position));
+                myIntent.putExtra(EXTRA_PARCEL_FOOD_TOPPING, toppingList.get(position));
                 view.getContext().startActivity(myIntent);
             }
         }
@@ -60,9 +61,11 @@ public class FirebaseToppingsAdapter extends RecyclerView.Adapter<FirebaseToppin
         {
             holder.foodName.setText( (toppingList.get(position).getToppingName()) );
             if (position < numToppingsFree)
-                holder.foodPrice.setText(Double.toString(0.00));
+                holder.foodPrice.setText(String.format(Locale.getDefault()
+                    , "%1$,.2f", 0.00));
             else
-                holder.foodPrice.setText(Double.toString(toppingList.get(position).getPrice()));
+                holder.foodPrice.setText(String.format(Locale.getDefault()
+                        , "%1$,.2f",toppingList.get(position).getPrice()));
         }
     }
     public void setToppingList(List<FirebaseFoodTopping> currentFoodList,boolean allowClick,int numToppingsFree) {

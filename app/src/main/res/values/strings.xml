@@ -19,11 +19,11 @@
     <string name="select_address">Select Address</string>
     <string name="order_id_label">Order ID: %s</string>
     <string name="app_logo">App Logo</string>
-    <string name="click_on_topping_to_add_to_order">Click on Topping to Add to Order</string>
+    <string name="click_on_topping_to_add_to_order">Click on Desired Topping</string>
     <string name="food_id_label">Food ID: %s</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
-    <string name="toppings_list">Would you like to add some Toppings?</string>
+    <string name="toppings_list">Add some Toppings?</string>
     <string name="db_id">id</string>
     <string name="db_location">location</string>
     <string name="logo_url"><![CDATA[https://firebasestorage.googleapis.com/v0/b/fir-foodie.appspot.com/o/foodie_logo.png?alt=media&token=6f83cb6d-64a2-409b-8d43-31a973e3ebfc]]></string>
@@ -34,4 +34,15 @@
     <string name="db_total">total</string>
     <string name="db_date">date</string>
     <string name="db_orders">Orders</string>
+    <string name="resume_order">Resume Order</string>
+    <string name="start_new_order">Start New Order</string>
+    <string name="total_label">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="topping_name">Topping Name</string>
+    <string name="topping_price">Price</string>
+    <string name="please_select_a_region">Please Select a Region</string>
+    <string name="included_toppings_label">Included Toppings: %s</string>
+    <string name="summary_total_label">Total: %s</string>
+    <string name="orderid_not_set">Order or Food Item not set</string>
+    <string name="fab_add_food_item">Add Food Item</string>
 </resources>

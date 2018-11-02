@@ -60,7 +60,6 @@ public class OrderListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //Change ICON
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +83,7 @@ public class OrderListActivity extends AppCompatActivity {
 
         Button submitTotal = findViewById(R.id.bt_order_list_total);
         tvOrderNumber = findViewById(R.id.tv_order_list_title);
-        tvOrderNumber.setText(orderNumber);
-
+        tvOrderNumber.setText(getString(R.string.food_id_label, orderNumber.substring(0, 6)));
         rvOrderFoodList = findViewById(R.id.rv_order_food);
         initRecyclerView();
         FirebaseAuth auth = FirebaseAuth.getInstance();

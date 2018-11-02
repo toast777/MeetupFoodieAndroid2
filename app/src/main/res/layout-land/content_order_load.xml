@@ -13,11 +13,9 @@
         android:id="@+id/iv_app_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/app_logo"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,27 +23,21 @@
         android:id="@+id/bt_resume_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="loadLastOrder"
         android:text="@string/resume_order"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_start_order"
-        android:transitionName="@android:transition/explode"/>
+        app:layout_constraintTop_toBottomOf="@+id/bt_start_order"/>
 
     <Button
         android:id="@+id/bt_start_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="startNewOrder"
         android:text="@string/start_new_order"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_app_logo"/>
 
@@ -59,21 +51,19 @@
         android:text="@string/load_order_title"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_resume_order"/>
+        app:layout_constraintStart_toEndOf="@+id/bt_start_order"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_order_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_start_order"
         app:layout_constraintTop_toBottomOf="@+id/tv_load_order_title"/>
 
 </android.support.constraint.ConstraintLayout>

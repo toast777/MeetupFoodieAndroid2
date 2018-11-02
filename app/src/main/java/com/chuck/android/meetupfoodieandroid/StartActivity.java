@@ -39,20 +39,26 @@ public class StartActivity extends AppCompatActivity {
     public static final String CONSTANT_NONE = "NONE";
     private FirebaseAuth auth;
     @BindView(R.id.rg_region) RadioGroup radioRegions;
+    private String TAG = "Start Activity" ;
+    private SharedPreferences sharedPreferences;
+    static {
+        //Will only get instance once, was crashing app if loaded twice
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Init Firebase
         FirebaseApp.initializeApp(this);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this); // bind butterknife
 
         auth = FirebaseAuth.getInstance();
 
         FirebaseUser currentUser = auth.getCurrentUser();
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //Goto Order Load Screen if Firebase Logged in and SharedPref set
         if (sharedPreferences.contains(PREF_REGION) && (currentUser != null))
@@ -73,6 +79,8 @@ public class StartActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInAnonymously:success");
                                 FirebaseUser user = auth.getCurrentUser();
+                                loadRegions();
+
                             } else {
                                 // If sign in fails, display a message to the user.
                                 FirebaseException e =(FirebaseException) task.getException();
@@ -83,16 +91,21 @@ public class StartActivity extends AppCompatActivity {
                         }
                     });
         }
+        //Check if user got logged in but didn't select preference
+        if ( !(sharedPreferences.contains(PREF_REGION)) ) {
+            loadRegions();
+        }
 
+    }
+    public void loadRegions() {
         //Init SharedPrefs
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         //If region pref is not set
-        if ( !(sharedPreferences.contains(PREF_REGION)) ) {
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference();
 
-            final String TAG = "Start Activity" ;
             //Load Regions from Firebase
             myRef.child("Regions").addValueEventListener(new ValueEventListener() {
                 int counter = 0;
@@ -123,19 +136,10 @@ public class StartActivity extends AppCompatActivity {
                     //Save the Pref
                     editor.putString(PREF_REGION, radioBtn.getText().toString());
                     editor.apply();
-                    Toast.makeText(StartActivity.this, radioBtn.getText(), Toast.LENGTH_SHORT).show();
                     //Goto Order Load Screen
                     Intent intent = new Intent(getApplicationContext(), OrderLoadActivity.class);
                     startActivity(intent);
                 }
             });
         }
-
-
-
-
-
-
-
-    }
 }

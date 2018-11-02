@@ -19,18 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OrderStartActivity"
-            android:label="@string/title_activity_order_start">
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".OrderListActivity"
             android:label="@string/title_activity_order_list"
-            android:parentActivityName=".OrderStartActivity"
+            android:parentActivityName=".OrderLoadActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.chuck.android.meetupfoodieandroid.OrderStartActivity"/>
+                android:value="com.chuck.android.meetupfoodieandroid.OrderLoadActivity"/>
         </activity>
         <activity
             android:name=".AddNewFoodActivity"

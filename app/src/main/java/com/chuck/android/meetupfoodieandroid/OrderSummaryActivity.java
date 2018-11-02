@@ -42,6 +42,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.chuck.android.meetupfoodieandroid.OrderLoadActivity.PREF_CURRENT_LIST;
 import static com.chuck.android.meetupfoodieandroid.adapters.FirebaseFoodAdapter.EXTRA_PARCEL_FOOD_ITEM;
@@ -66,8 +67,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         //Check intent if widget was clicked
         //Load order from shared preference
         Bundle bundle = getIntent().getExtras();
@@ -126,7 +129,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 summaryOrder = new Order(id, region, date, total,location,restaurant,customFoodItems);
                 Log.i(TAG, "summary loaded");
                 calculateTotals(summaryOrder);
-                orderSummary.setText("Total: " + summaryOrder.getTotal().toString());
+                orderSummary.setText(String.format(getString(R.string.summary_total_label), summaryOrder.getTotal().toString()));
                 adapter.setFoodList(summaryOrder.getFoodItems());
                 //Set widget info
                 Context context = getApplicationContext();

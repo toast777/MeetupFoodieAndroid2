@@ -49,7 +49,7 @@ public class CustomFoodItem implements Parcelable{
         customPrice = in.readDouble();
         id = in.readString();
         if (in.readByte() == 0x01) {
-            toppings = new ArrayList<FirebaseFoodTopping>();
+            toppings = new ArrayList<>();
             in.readList(toppings, FirebaseFoodTopping.class.getClassLoader());
         } else {
             toppings = null;
